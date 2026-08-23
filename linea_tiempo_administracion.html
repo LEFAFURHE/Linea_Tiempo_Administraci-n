@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Línea de tiempo — Evolución de la Administración</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --paper: #ECE2CF;
+    --paper-deep: #E2D5BC;
+    --ink: #1F2A3C;
+    --ink-soft: #3A4356;
+    --wax: #8C2F39;
+    --gold: #A9843D;
+    --charcoal: #2B2420;
+    --line: rgba(31,42,60,0.22);
+    --card-shadow: 0 6px 18px rgba(43,36,32,0.14);
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(169,132,61,0.10), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(140,47,57,0.08), transparent 45%),
+      var(--paper);
+    color: var(--charcoal);
+    font-family: 'Spectral', serif;
+    padding: 0 0 80px;
+  }
+
+  .masthead{
+    text-align:center;
+    padding: 64px 24px 40px;
+    border-bottom: 2px solid var(--ink);
+    background: var(--paper-deep);
+    position:relative;
+  }
+  .masthead::before, .masthead::after{
+    content:"";
+    position:absolute;
+    left:50%; transform:translateX(-50%);
+    width:120px; height:2px; background:var(--gold);
+  }
+  .masthead::before{ top:20px; }
+  .masthead::after{ bottom:16px; }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--wax);
+    margin: 0 0 14px;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1.05;
+    margin: 0 0 16px;
+    color: var(--ink);
+  }
+  .subtitle{
+    max-width: 620px;
+    margin: 0 auto;
+    font-size: 16px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  .timeline{
+    max-width: 980px;
+    margin: 56px auto 0;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .spine{
+    position:absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 3px;
+    background: repeating-linear-gradient(
+      to bottom, var(--ink) 0 10px, transparent 10px 16px
+    );
+    transform: translateX(-50%);
+  }
+
+  .era{
+    position: relative;
+    width: 46%;
+    margin-bottom: 56px;
+    opacity: 0;
+    transform: translateY(24px);
+    animation: rise 0.7s ease forwards;
+  }
+  .era:nth-child(odd){ left: 0; text-align: right; }
+  .era:nth-child(even){ left: 54%; text-align: left; }
+
+  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+
+  .seal{
+    position:absolute;
+    top: 0;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: 2px solid var(--wax);
+    background: var(--paper);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 13px; font-weight:600;
+    color: var(--wax);
+    box-shadow: 0 0 0 4px var(--paper), 0 0 0 5px var(--line);
+  }
+  .era:nth-child(odd) .seal{ right: -69px; }
+  .era:nth-child(even) .seal{ left: -69px; }
+
+  .card{
+    background: #F5EEDF;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 20px 24px;
+    box-shadow: var(--card-shadow);
+  }
+  .era:nth-child(odd) .card{ border-right: 3px solid var(--gold); }
+  .era:nth-child(even) .card{ border-left: 3px solid var(--gold); }
+
+  .date{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--wax);
+    text-transform: uppercase;
+    display:block;
+    margin-bottom: 6px;
+  }
+  .era h2{
+    font-family:'Fraunces', serif;
+    font-size: 21px;
+    font-weight:600;
+    color: var(--ink);
+    margin: 0 0 8px;
+  }
+  .era p{
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .figures{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--gold);
+    margin-top: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  .closing{
+    max-width: 680px;
+    margin: 40px auto 0;
+    padding: 28px 32px;
+    text-align:center;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+  }
+  .closing p{
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    font-size: 15px;
+    margin: 0;
+  }
+
+  @media (max-width: 720px){
+    .spine{ left: 24px; }
+    .era, .era:nth-child(odd), .era:nth-child(even){
+      width: calc(100% - 64px);
+      left: 64px !important;
+      text-align: left !important;
+    }
+    .era:nth-child(odd) .card{ border-right:none; border-left: 3px solid var(--gold); }
+    .era:nth-child(odd) .seal, .era:nth-child(even) .seal{ left: -56px; right:auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .era{ animation: none; opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="masthead">
+    <p class="eyebrow">Relatoría histórica</p>
+    <h1>La evolución de la administración</h1>
+    <p class="subtitle">De la organización instintiva de las primeras comunidades a la gestión estratégica del talento y el conocimiento en la era contemporánea.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="spine"></div>
+
+    <div class="era" style="animation-delay:0.02s">
+      <div class="seal">I</div>
+      <div class="card">
+        <span class="date">Prehistoria</span>
+        <h2>Comunidades primitivas</h2>
+        <p>La administración nace como necesidad práctica: dividir tareas según las capacidades de cada integrante para alimentarse, protegerse y construir refugio, sentando la primera forma de organización.</p>
+      </div>
+    </div>
+
+    <div class="era" style="animation-delay:0.10s">
+      <div class="seal">II</div>
+      <div class="card">
+        <span class="date">Civilizaciones antiguas</span>
+        <h2>Egipto, Mesopotamia, China, Grecia y Roma</h2>
+        <p>La agricultura y los asentamientos permanentes exigen planear la producción y distribuir excedentes. Egipto organiza grandes obras, Mesopotamia crea registros escritos de control, China vincula la administración al gobierno del Estado, y Roma perfecciona mecanismos para gestionar territorios y ejércitos.</p>
+        <span class="figures">Planeación · Control · Coordinación del trabajo</span>
+      </div>
+    </div>
+
+    <div class="era" style="animation-delay:0.18s">
+      <div class="seal">III</div>
+      <div class="card">
+        <span class="date">Edad Media</span>
+        <h2>Feudos, monasterios y gremios</h2>
+        <p>Las relaciones jerárquicas del feudalismo distribuyen responsabilidades y recursos. Los monasterios administran tierras y bienes, y el crecimiento del comercio da origen a gremios que regulan producción, finanzas e intercambio.</p>
+      </div>
+    </div>
+
+    <div class="era" style="animation-delay:0.26s">
+      <div class="seal">IV</div>
+      <div class="card">
+        <span class="date">Siglo XVIII</span>
+        <h2>Revolución Industrial</h2>
+        <p>Las máquinas y el crecimiento de las fábricas trasladan el trabajo del taller a grandes unidades productivas. La necesidad de coordinar sistemáticamente estos procesos exige, por primera vez, estudiar la administración de forma estructurada.</p>
+      </div>
+    </div>
+
+    <div class="era" style="animation-delay:0.34s">
+      <div class="seal">V</div>
+      <div class="card">
+        <span class="date">Finales s. XIX – inicios s. XX</span>
+        <h2>Administración científica</h2>
+        <p>Frederick W. Taylor analiza sistemáticamente las tareas y establece métodos de trabajo para elevar la eficiencia, consolidando la idea de que la administración puede estudiarse con métodos racionales.</p>
+        <span class="figures">Frederick W. Taylor</span>
+      </div>
+    </div>
+
+    <div class="era" style="animation-delay:0.42s">
+      <div class="seal">VI</div>
+      <div class="card">
+        <span class="date">Principios del siglo XX</span>
+        <h2>Teoría clásica y burocracia</h2>
+        <p>Henri Fayol concibe la organización como un todo y define funciones de planeación, organización, dirección, coordinación y control. Max Weber, en paralelo, formula la burocracia como organización basada en reglas, jerarquías y competencias definidas.</p>
+        <span class="figures">Henri Fayol · Max Weber</span>
+      </div>
+    </div>
+
+    <div class="era" style="animation-delay:0.50s">
+      <div class="seal">VII</div>
+      <div class="card">
+        <span class="date">Décadas de 1920–1930</span>
+        <h2>Escuela de las relaciones humanas</h2>
+        <p>Los estudios de Elton Mayo revelan que la eficiencia no depende solo de métodos y estructuras: la motivación, la comunicación, el liderazgo y las relaciones interpersonales resultan esenciales para el funcionamiento organizacional.</p>
+        <span class="figures">Elton Mayo</span>
+      </div>
+    </div>
+
+    <div class="era" style="animation-delay:0.58s">
+      <div class="seal">VIII</div>
+      <div class="card">
+        <span class="date">Mediados del siglo XX</span>
+        <h2>Nuevos enfoques administrativos</h2>
+        <p>Surgen tres miradas complementarias: el enfoque cuantitativo, que aplica herramientas matemáticas y estadísticas a la toma de decisiones; el enfoque de sistemas, que ve a la organización como un sistema abierto; y el enfoque contingencial, que sostiene que no existe una única forma correcta de administrar.</p>
+      </div>
+    </div>
+
+    <div class="era" style="animation-delay:0.66s">
+      <div class="seal">IX</div>
+      <div class="card">
+        <span class="date">Últimas décadas</span>
+        <h2>Administración contemporánea</h2>
+        <p>La globalización, la innovación tecnológica y la importancia del conocimiento transforman la disciplina. Ya no basta con controlar recursos: hoy se busca desarrollar el talento humano, promover la innovación y generar valor de forma sostenible.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="closing">
+    <p>De la eficiencia y el control a una visión integral que reconoce a las personas, la tecnología, el entorno y la capacidad de adaptación: la administración sigue siendo un proceso dinámico al servicio de los objetivos humanos.</p>
+  </div>
+
+</body>
+</html>
